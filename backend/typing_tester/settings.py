@@ -39,3 +39,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+ROOT_URLCONF = 'typing_tester.urls'

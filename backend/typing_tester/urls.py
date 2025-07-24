@@ -3,5 +3,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('tester_app.urls')),
+    path('', include('tester_app.urls')),  # ✅ this handles the root "/"
 ]

@@ -1,15 +1,26 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 import json
 import random
-from .. import passages
+from passage import PASSAGES  # ✅ Corrected import
+
+def home(request):
+    print("🏠 Home view triggered")  # 👈 test print
+    return HttpResponse("Typing Tester API is running.")
 
 def get_text(request):
-    text = random.choice(passages.PASSAGES)
-    request.session['current_text'] = text
-    request.session['start_time'] = timezone.now().timestamp()
-    return JsonResponse({'text': text})
+    try:
+        print("PASSAGES content:", PASSAGES)
+        text = random.choice(PASSAGES)
+        print("Selected text:", text)
+        request.session['current_text'] = text
+        request.session['start_time'] = timezone.now().timestamp()
+        return JsonResponse({'text': text})
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return JsonResponse({'error': str(e)}, status=500)
 
 @csrf_exempt
 def submit_result(request):
@@ -42,4 +53,5 @@ def submit_result(request):
             'accuracy': f"{accuracy:.2f}",
             'averageWpm': f"{avg_wpm:.2f}"
         })
+
     return JsonResponse({'error': 'Invalid request'}, status=400)
